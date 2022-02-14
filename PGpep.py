@@ -145,7 +145,7 @@ def post_processing_dn():
     # peaks 결과 전처리
     dn_dict = {}
     file_list = os.listdir('./DENOVO//')
-    replace_list = '1234567890+().'
+    replace_list = '1234567890+-().'
     dn = open('./DENOVO//'+file_list[0])
     dn_ori = dn.readlines()
     for line in dn_ori[1:]:
