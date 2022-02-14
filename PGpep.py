@@ -18,7 +18,14 @@ import inspect
 import time
 import sys
 # import ahocorapy
-ahocorapy_install = 'pip3.10 install ahocorapy'
+
+## enviroments
+pip_command = "pip"
+samtools_loc = "samtools"
+actg_const_loc = "ACTG_construction.jar"
+actg_mapping_loc = "ACTG_mapping.jar"
+
+ahocorapy_install = pip_command + ' install ahocorapy'
 r = subprocess.Popen(ahocorapy_install, shell=True).wait()
 if r == 1:
     print("install ahocorapy failed!")
@@ -29,8 +36,15 @@ input_param = " ".join(whole_input)
 
 
 # In[ ]:
+## parameters taken from user
+composite_db_path = ""
+fpkm_column_num = 8
+
+## auto-generation
+suffix_identifier = 0
 
 def main_one(input_param):
+    
     #mode o p_name patient_name t_id_c 0 g_id_c 3 fpkm_c 9 fpkm_p fpkm_path bam_p bam_path f_s_db_p 1st_2nd_db_path c_db_p composite_db_path u_db_p uniprot_db_path 
     transcript_id_column_num = int(input_param.split('t_id_c ')[1].split(' ')[0])
     gene_id_column_num = int(input_param.split('g_id_c ')[1].split(' ')[0])
@@ -41,7 +55,6 @@ def main_one(input_param):
     composite_db_path = str(input_param.split('c_db_p ')[1].split(' ')[0])
     uniprot_db_path = str(input_param.split('u_db_p ')[1].split(' ')[0])
     patient_name = str(input_param.split('p_name ')[1].split(' ')[0])
-    
     
     #1 : peaks 결과 후처리 ( 1. db search 결과와 겹치는 scan 제거 2. 기존 db에 있는 서열들과 겹치는 서열 제거 )
     post_processing_dn_one(first_2nd_db_path, composite_db_path, uniprot_db_path)
@@ -4173,7 +4186,7 @@ def make_bed_for_ri_final(final_ri_after_s_p,set_num,patient_num):
     r = subprocess.Popen(remove_output, shell=True).wait()
     if r == 1: 
         print("deleting bed failed")
-
+    
 
 # In[151]:
 
