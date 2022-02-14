@@ -145,13 +145,12 @@ def post_processing_dn():
     # peaks 결과 전처리
     dn_dict = {}
     file_list = os.listdir('./DENOVO//')
-    replace_list = '1234567890+-().'
+    replace_list = '[+-1234567890\\(\\).]*'
     dn = open('./DENOVO//'+file_list[0])
     dn_ori = dn.readlines()
     for line in dn_ori[1:]:
         peptide = line.split(",")[3].replace("I","L")
-        for i in replace_list:
-            peptide = peptide.replace(i, "")
+        peptide = peptide.sub(replace_list, "", peptide)
         fraction_scan = line.split(",")[4]
         if dn_dict.get(fraction_scan) == None:
             dn_dict[fraction_scan] = peptide
@@ -187,13 +186,12 @@ def post_processing_dn_one(first_2nd_db_path, composite_db_path, uniprot_db_path
     # peaks 결과 전처리
     dn_dict = {}
     file_list = os.listdir('./DENOVO//')
-    replace_list = '1234567890+().'
+    replace_list = '[+-1234567890\\(\\).]*'
     dn = open('./DENOVO//'+file_list[0])
     dn_ori = dn.readlines()
     for line in dn_ori[1:]:
         peptide = line.split(",")[3].replace("I","L")
-        for i in replace_list:
-            peptide = peptide.replace(i, "")
+        peptide = peptide.sub(replace_list, "", peptide)
         fraction_scan = line.split(",")[4]
         if dn_dict.get(fraction_scan) == None:
             dn_dict[fraction_scan] = peptide
@@ -447,7 +445,7 @@ output :
     db_1st_2nd_dict
 """
 def get_scan_from_1st_2nd(ori_file,set_num,db_1st_2nd_dict):
-    c = '1234567890.+-'
+    c = '[+-1234567890.]*'
     for i in ori_file[1:]:
         fraction = i.split("\t")[0].split("_")[-1]
         scan = i.split("\t")[-1].replace("\n","")
@@ -459,8 +457,7 @@ def get_scan_from_1st_2nd(ori_file,set_num,db_1st_2nd_dict):
             fraction = 'F'+now_fraction+":"
         psm = fraction+scan
         pep = i.split("\t")[8][2:-2].replace("I","L")
-        for i in c:
-            pep = pep.replace(i,"")
+        pep = pep.sub(c, "", pep)
         db_1st_2nd_dict[psm] = pep
     return db_1st_2nd_dict
 
