@@ -44,7 +44,7 @@ def main_one(input_param):
     
     
     #1 : peaks 결과 후처리 ( 1. db search 결과와 겹치는 scan 제거 2. 기존 db에 있는 서열들과 겹치는 서열 제거 )
-    post_processing_dn()
+    post_processing_dn_one(first_2nd_db_path, composite_db_path, uniprot_db_path)
     
     #2 : fpkm 계산 결과로 환자별 gtf 생성 ^
     make_gtf_every_patients(transcript_id_column_num, gene_id_column_num, fpkm_column_num) 
@@ -197,7 +197,6 @@ def post_processing_dn_one(first_2nd_db_path, composite_db_path, uniprot_db_path
             dn_dict[fraction_scan] = peptide
     db_1st_2nd_dict = {}
     # peaks 결과 db 서치 fraction:scan 겹치는 거 삭제
-    file_list = os.listdir('./DB/1st_2nd_DB_search')
     file_now = open(first_2nd_db_path)
     file_now_ori = file_now.readlines()
     db_1st_2nd_dict = get_scan_from_1st_2nd(file_now_ori,set_num,db_1st_2nd_dict)
